@@ -1,0 +1,35 @@
+<%= render "shared/navbar" %>
+
+<div class="container">
+  <h1>Welcome to the Project Management App</h1>
+
+  <hr>
+
+  <h2>Your Projects</h2>
+  <ul>
+    <% @projects.each do |project| %>
+      <li><%= link_to project.name, project_path(project) %></li>
+    <% end %>
+  </ul>
+
+  <h2>Your Tasks</h2>
+  <ul>
+    <% @tasks.each do |task| %>
+      <li><%= link_to task.title, task_path(task) %></li>
+    <% end %>
+  </ul>
+
+  <h2>Milestones</h2>
+  <ul>
+    <% @milestones.each do |milestone| %>
+      <li><%= link_to milestone.name, milestone_path(milestone) %></li>
+    <% end %>
+  </ul>
+
+  <h2>All Users</h2>
+  <ul>
+    <% @users.each do |user| %>
+      <li><%= user.email %> (<%= user.role %>)</li>
+    <% end %>
+  </ul>
+</div>
