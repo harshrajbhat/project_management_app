@@ -18,12 +18,12 @@
 
   <div>
     <%= form.label :project_id, style: "display: block" %>
-    <%= form.text_field :project_id %>
+    <%= form.select :project_id, Project.all.map { |p| ["#{p.name} (##{p.id})", p.id] }, prompt: "Select project" %>
   </div>
 
   <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
+    <%= form.label :user_id, "Team Member", style: "display: block" %>
+    <%= form.select :user_id, User.all.map { |u| ["#{u.name} (#{u.email})", u.id] }, prompt: "Select user" %>
   </div>
 
   <div>

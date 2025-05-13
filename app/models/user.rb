@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  before_create :set_default_role
 
   enum :role, [:manager, :developer]
 
