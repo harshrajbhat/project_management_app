@@ -1,35 +1,65 @@
-<%= render "shared/navbar" %>
 
-<div class="container">
-  <h1>Welcome to the Project Management App</h1>
+<div class="container py-5">
+  <h1 class="text-center mb-5">Project Management Dashboard</h1>
 
-  <hr>
-
-  <h2>Your Projects</h2>
-  <ul>
+  <!-- Projects Section -->
+  <h2 class="mb-4">Projects</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <% @projects.each do |project| %>
-      <li><%= link_to project.name, project_path(project) %></li>
+      <div class="col">
+        <div class="card h-100 border-secondary bg-dark text-white">
+          <div class="card-body">
+            <h5 class="card-title"><%= project.name %></h5>
+            <p class="card-text"><%= truncate(project.description, length: 100) %></p>
+            <p class="card-text">
+              <span class="badge bg-info text-dark">Status: <%= project.status %></span>
+            </p>
+            <a href="<%= project_path(project) %>" class="btn btn-outline-light mt-2">Show</a>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
+  
 
-  <h2>Your Tasks</h2>
-  <ul>
+  <!-- Tasks Section -->
+  <h2 class="mb-4">Tasks</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <% @tasks.each do |task| %>
-      <li><%= link_to task.title, task_path(task) %></li>
+      <div class="col">
+        <div class="card h-100 border-secondary bg-dark text-white">
+          <div class="card-body">
+            <h5 class="card-title"><%= task.title %></h5>
+            <p class="card-text"><%= truncate(task.description, length: 100) %></p>
+            <div class="mb-2">
+              <span class="badge bg-primary">Status: <%= task.status %></span>
+              <span class="badge bg-warning text-dark">Priority: <%= task.priority %></span>
+            </div>
+            <a href="<%= task_path(task) %>" class="btn btn-outline-light">Show</a>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
 
-  <h2>Milestones</h2>
-  <ul>
+  <!-- Milestones Section -->
+  <h2 class="mb-4">Milestones</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
     <% @milestones.each do |milestone| %>
-      <li><%= link_to milestone.name, milestone_path(milestone) %></li>
+      <div class="col">
+        <div class="card h-100 border-secondary bg-dark text-white">
+          <div class="card-body">
+            <h5 class="card-title"><%= milestone.name %></h5>
+            <p class="card-text"><%= truncate(milestone.description, length: 100) %></p>
+            <p class="card-text">
+              <span class="badge bg-secondary">
+                Due: <%= milestone.due_date&.strftime("%b %d, %Y") %>
+              </span>
+            </p>
+            <a href="<%= milestone_path(milestone) %>" class="btn btn-outline-light mt-2">Show</a>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
-
-  <h2>All Users</h2>
-  <ul>
-    <% @users.each do |user| %>
-      <li><%= user.email %> (<%= user.role %>)</li>
-    <% end %>
-  </ul>
+  </div>
 </div>
