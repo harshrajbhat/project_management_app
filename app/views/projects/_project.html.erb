@@ -1,43 +1,131 @@
-<div class="container mt-5">
-  <div class="card shadow rounded" id="<%= dom_id project %>">
-    <div class="card-header bg-dark text-white">
-      <h3><%= project.name %></h3>
+<!-- _project.html.erb partial -->
+<div class="card shadow-sm border-0 rounded" id="<%= dom_id project %>">
+  <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+    <div class="d-flex align-items-center">
+      <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+        <i class="fas fa-project-diagram text-primary"></i>
+      </div>
+      <div>
+        <h3 class="mb-0 fs-4"><%= project.name %></h3>
+        <p class="text-muted mb-0 small">Created by User <%= project.user_id %></p>
+      </div>
+      
+      <% status_badge_class = case project.status.downcase
+         when "completed" then "bg-success"
+         when "in_progress" then "bg-info"
+         when "on_hold" then "bg-warning text-dark"
+         when "cancelled" then "bg-danger"
+         else "bg-secondary"
+         end %>
+      <span class="badge <%= status_badge_class %> ms-3"><%= project.status.capitalize %></span>
     </div>
-    <div class="card-body">
-      <p>
-        <strong>Description:</strong><br>
-        <%= project.description %>
-      </p>
-
-      <p>
-        <strong>Start Date:</strong> <%= project.start_date.strftime("%B %d, %Y") %>
-      </p>
-
-      <p>
-        <strong>End Date:</strong> <%= project.end_date.strftime("%B %d, %Y") %>
-      </p>
-
-      <p>
-        <strong>Status:</strong>
-        <span class="badge bg-info text-dark"><%= project.status.capitalize %></span>
-      </p>
-
-      <p>
-        <strong>Created by User ID:</strong> <%= project.user_id %>
-      </p>
+    
+    <div class="dropdown">
+      <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow">
+        <li>
+          <%= link_to edit_project_path(project), class: "dropdown-item" do %>
+            <i class="fas fa-edit me-2 text-primary"></i> Edit Project
+          <% end %>
+        </li>
+        <li>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-star me-2 text-warning"></i> Star Project
+          </a>
+        </li>
+        <li>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-share-alt me-2 text-success"></i> Share Project
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <%= button_to project_path(project), method: :delete, class: "dropdown-item text-danger", form: { data: { turbo_confirm: "Are you sure you want to delete this project?" } } do %>
+            <i class="fas fa-trash-alt me-2"></i> Delete Project
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="card-body p-0">
+    <!-- Project timeline -->
+    <div class="p-3 border-bottom">
+      <div class="d-flex justify-content-between mb-2">
+        <h6 class="text-muted mb-0"><i class="fas fa-clock me-2"></i>Timeline</h6>
+        <span class="text-muted small"><%= 
+          if project.start_date.present? && project.end_date.present?
+            "#{(project.end_date - project.start_date).to_i} days duration"
+          else
+            "Duration not set"
+          end
+        %></span>
+      </div>
+      
+      <div class="progress mb-2" style="height: 8px;">
+        <% 
+          today = Date.today
+          start_date = project.start_date
+          end_date = project.end_date
+          
+          # Check if start_date and end_date are valid Date objects
+          if start_date.is_a?(Date) && end_date.is_a?(Date)
+            total_days = (end_date - start_date).to_i
+            days_passed = [(today - start_date).to_i, 0].max
+            progress_percentage = total_days > 0 ? [(days_passed.to_f / total_days * 100), 100].min : 0
+          else
+            progress_percentage = 0
+          end
+          
+          # Assign progress class based on percentage
+          progress_class = if progress_percentage >= 100
+            "bg-success"
+          elsif progress_percentage > 75
+            "bg-warning"
+          else
+            "bg-primary"
+          end
+        %>
+        <div class="progress-bar <%= progress_class %>" role="progressbar" style="width: <%= progress_percentage %>%" 
+             aria-valuenow="<%= progress_percentage %>" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-calendar-alt text-muted me-1"></i>
+          <small><%= project.start_date.present? ? project.start_date.strftime("%b %d, %Y") : "Not set" %></small>
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="fas fa-calendar-check text-muted me-1"></i>
+          <small><%= project.end_date.present? ? project.end_date.strftime("%b %d, %Y") : "Not set" %></small>
+          <% if project.end_date.present? && project.end_date < Date.today && project.status.downcase != "completed" %>
+            <span class="badge bg-danger ms-1">Overdue</span>
+          <% elsif project.end_date.present? && project.end_date <= Date.today + 7.days && project.status.downcase != "completed" %>
+            <span class="badge bg-warning text-dark ms-1">Due Soon</span>
+          <% end %>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-4 d-flex gap-3">
-      <%= link_to edit_project_path(project), class: "btn btn-sm btn-warning", title: "Edit" do %>
-        <i class="fas fa-edit"></i> Edit
-      <% end %>
+    <!-- Project description -->
+    <div class="p-3">
+      <h6 class="text-muted mb-2"><i class="fas fa-align-left me-2"></i>Description</h6>
+      <p class="mb-0"><%= project.description %></p>
+    </div>
+  </div>
 
-      <%= link_to projects_path, class: "btn btn-sm btn-secondary", title: "Back" do %>
-        <i class="fas fa-arrow-left"></i> Back
+  <div class="card-footer bg-white border-top d-flex justify-content-between align-items-center p-3">
+    <div class="d-flex align-items-center">
+      <%= link_to projects_path, class: "btn btn-sm btn-outline-secondary" do %>
+        <i class="fas fa-arrow-left me-1"></i> Back
       <% end %>
-
-      <%= button_to project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger", title: "Delete" do %>
-        <i class="fas fa-trash-alt"></i> Delete
+    </div>
+    
+    <div>
+      <%= link_to new_task_path(project_id: project.id), class: "btn btn-sm btn-primary" do %>
+        <i class="fas fa-plus me-1"></i> Add Task
       <% end %>
     </div>
   </div>

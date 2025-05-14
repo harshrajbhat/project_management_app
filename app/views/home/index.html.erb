@@ -100,17 +100,6 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <h5 class="card-title mb-0"><%= project.name %></h5>
-                  <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      <li><%= link_to 'View Details', project_path(project), class: "dropdown-item" %></li>
-                      <li><%= link_to 'Edit', edit_project_path(project), class: "dropdown-item" %></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><%= link_to 'Delete', project_path(project), class: "dropdown-item text-danger", method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                    </ul>
-                  </div>
                 </div>
                 <p class="card-text text-muted mb-3"><%= truncate(project.description, length: 100) %></p>
                 
@@ -207,9 +196,9 @@
                   <% end %>
                 </td>
                 <td>
-                  <div class="btn-group">
-                    <%= link_to task_path(task), class: "btn btn-sm btn-outline-primary" do %>
-                      <i class="fas fa-eye"></i>
+                  <div class="btn-group m-1">
+                    <%= link_to task_path(task), class: "me-2 btn btn-sm btn-outline-primary" do %>
+                      <i class="fas fa-eye "></i>
                     <% end %>
                     <%= link_to edit_task_path(task), class: "btn btn-sm btn-outline-secondary" do %>
                       <i class="fas fa-edit"></i>
@@ -242,17 +231,7 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <h5 class="card-title mb-0"><%= milestone.name %></h5>
-                  <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      <li><%= link_to 'View Details', milestone_path(milestone), class: "dropdown-item" %></li>
-                      <li><%= link_to 'Edit', edit_milestone_path(milestone), class: "dropdown-item" %></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><%= link_to 'Delete', milestone_path(milestone), class: "dropdown-item text-danger", method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                    </ul>
-                  </div>
+                  
                 </div>
                 <p class="card-text text-muted mb-3"><%= truncate(milestone.description, length: 100) %></p>
                 
@@ -277,7 +256,7 @@
                   <%= link_to milestone_path(milestone), class: "btn btn-sm btn-outline-success" do %>
                     <i class="fas fa-eye me-1"></i> View Details
                   <% end %>
-                  <small class="text-muted">
+                  <small class="text-bold">
                     <i class="fas fa-link me-1"></i> <%= milestone.project&.name || 'Unassigned' %>
                   </small>
                 </div>

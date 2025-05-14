@@ -1,10 +1,40 @@
-<p style="color: green"><%= notice %></p>
+<!-- show.html.erb -->
+<div class="container py-4">
+  <% if notice.present? %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
 
-<%= render @task %>
-
-<div>
-  <%= link_to "Edit this task", edit_task_path(@task) %> |
-  <%= link_to "Back to tasks", tasks_path %>
-
-  <%= button_to "Destroy this task", @task, method: :delete %>
+  <div class="card shadow">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Task Details</h4>
+      <span class="badge <%= @task.status == 'Completed' ? 'bg-success' : (@task.status == 'In Progress' ? 'bg-warning' : 'bg-secondary') %>">
+        <%= @task.status %>
+      </span>
+    </div>
+    
+    <div class="card-body">
+      <%= render @task %>
+    </div>
+    
+    <div class="card-footer bg-white d-flex justify-content-between">
+      <div>
+        <%= link_to tasks_path, class: "btn btn-outline-secondary" do %>
+          <i class="bi bi-arrow-left"></i> Back to tasks
+        <% end %>
+      </div>
+      
+      <div>
+        <%= link_to edit_task_path(@task), class: "btn btn-outline-primary me-2" do %>
+          <i class="bi bi-pencil"></i> Edit
+        <% end %>
+        
+        <%= button_to @task, method: :delete, class: "btn btn-outline-danger", form: { data: { turbo_confirm: "Are you sure?" } }, style: "display: inline-block;" do %>
+          <i class="bi bi-trash"></i> Delete
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
