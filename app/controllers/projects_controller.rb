@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ]
 
   def index
-    @projects = Project.all
+      @projects = Project.all
+
+      @q = Project.ransack(params[:q])
+      @projects = @q.result(distinct: true)
   end
 
   def show

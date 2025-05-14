@@ -1,32 +1,32 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: %i[ show edit update destroy ]
 
-  # GET /teams or /teams.json
+
   def index
     @teams = Team.all
   end
 
-  # GET /teams/1 or /teams/1.json
+
   def show
   end
 
-  # GET /teams/new
+
   def new
     @team = Team.new
   end
 
-  # GET /teams/1/edit
+
   def edit
   end
 
-  # POST /teams or /teams.json
+
   def create
     @team = Team.new(team_params)
-  
+
     # Remove blank IDs and associate users
     user_ids = params[:team][:user_ids].reject(&:blank?)
     @team.users = User.where(id: user_ids)
-  
+
     respond_to do |format|
       if @team.save
         format.html { redirect_to @team, notice: "Team was successfully created." }
@@ -35,12 +35,12 @@ class TeamsController < ApplicationController
       end
     end
   end
-  
-  
+
+
   def update
     user_ids = params[:team][:user_ids].reject(&:blank?)
     @team.users = User.where(id: user_ids)
-  
+
     respond_to do |format|
       if @team.update(team_params)
         format.html { redirect_to @team, notice: "Team was successfully updated." }
@@ -49,10 +49,9 @@ class TeamsController < ApplicationController
       end
     end
   end
-  
-  
 
-  # DELETE /teams/1 or /teams/1.json
+
+
   def destroy
     @team.destroy!
 
@@ -63,7 +62,7 @@ class TeamsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_team
       @team = Team.find(params.expect(:id))
     end
@@ -71,6 +70,4 @@ class TeamsController < ApplicationController
     def team_params
       params.require(:team).permit(:name, :project_id, user_ids: [])
     end
-    
-    
 end

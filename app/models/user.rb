@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :tasks
   has_many :teams, through: :team_users
   has_many :team_users, dependent: :destroy
-
+ 
+  
 end
 
