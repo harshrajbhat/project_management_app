@@ -7,7 +7,8 @@ class User < ApplicationRecord
 
   has_many :projects
   has_many :tasks
-  has_many :teams
-
+  has_many :teams, through: :team_users
+  has_many :team_users, dependent: :destroy
 
 end
+

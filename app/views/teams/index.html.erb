@@ -6,7 +6,7 @@
 
 <div id="teams">
   <% @teams.each do |team| %>
-    <%= render team %>
+  <%= render partial: "team", locals: { team: team } %>
     <p>
       <%= link_to "Show this team", team %>
     </p>

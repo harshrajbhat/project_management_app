@@ -22,30 +22,35 @@ class TeamsController < ApplicationController
   # POST /teams or /teams.json
   def create
     @team = Team.new(team_params)
-
+  
+    # Remove blank IDs and associate users
+    user_ids = params[:team][:user_ids].reject(&:blank?)
+    @team.users = User.where(id: user_ids)
+  
     respond_to do |format|
       if @team.save
         format.html { redirect_to @team, notice: "Team was successfully created." }
-        format.json { render :show, status: :created, location: @team }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
   end
-
-  # PATCH/PUT /teams/1 or /teams/1.json
+  
+  
   def update
+    user_ids = params[:team][:user_ids].reject(&:blank?)
+    @team.users = User.where(id: user_ids)
+  
     respond_to do |format|
       if @team.update(team_params)
         format.html { redirect_to @team, notice: "Team was successfully updated." }
-        format.json { render :show, status: :ok, location: @team }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
   end
+  
+  
 
   # DELETE /teams/1 or /teams/1.json
   def destroy
@@ -63,8 +68,9 @@ class TeamsController < ApplicationController
       @team = Team.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def team_params
-      params.expect(team: [ :name, :project_id, :user_id ])
+      params.require(:team).permit(:name, :project_id, user_ids: [])
     end
+    
+    
 end

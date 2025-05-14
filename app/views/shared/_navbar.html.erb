@@ -1,6 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 mt-2">
+<!-- _navbar.html.erb -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">User</a>
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <i class="fas fa-project-diagram me-2"></i>
+      <span class="fw-bold">PlanCraft</span>
+    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -8,21 +13,64 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><%= link_to "Projects", projects_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Tasks", tasks_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Milestones", milestones_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Teams", teams_path, class: "nav-link" %></li>
+        <li class="nav-item">
+          <%= link_to root_path, class: "nav-link d-flex align-items-center #{'active' if current_page?(root_path)}" do %>
+            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to projects_path, class: "nav-link d-flex align-items-center #{'active' if controller_name == 'projects'}" do %>
+            <i class="fas fa-clipboard-list me-1"></i> Projects
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to tasks_path, class: "nav-link d-flex align-items-center #{'active' if controller_name == 'tasks'}" do %>
+            <i class="fas fa-tasks me-1"></i> Tasks
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to milestones_path, class: "nav-link d-flex align-items-center #{'active' if controller_name == 'milestones'}" do %>
+            <i class="fas fa-flag me-1"></i> Milestones
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to teams_path, class: "nav-link d-flex align-items-center #{'active' if controller_name == 'teams'}" do %>
+            <i class="fas fa-users me-1"></i> Teams
+          <% end %>
+        </li>
       </ul>
 
-      <% if user_signed_in? %>
-        <span class="navbar-text me-3">
-          Logged in as <%= current_user.email %>
-        </span>
-          <%= button_to 'Logout', destroy_user_session_path, method: :delete,class: "btn btn-outline-danger me-2" %>
+      <form class="d-flex me-2 my-2 my-lg-0 flex-grow-1 flex-lg-grow-0" style="max-width: 250px;">
+        <div class="input-group">
+          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-light" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
 
+      <!-- User Authentication Buttons -->
+      <% if user_signed_in? %>
+        <div class="d-flex align-items-center">
+          <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-2" style="width: 28px; height: 28px;">
+            <span class="text-primary fw-bold"><%= current_user.email.first.upcase %></span>
+          </div>
+          <span class="d-none d-md-inline-block text-truncate" style="max-width: 150px;">
+            <%= current_user.email %>
+          </span>
+          <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-outline-light ms-2" do %>
+            <i class="fas fa-sign-out-alt me-1"></i> Log out
+          <% end %>
+        </div>
       <% else %>
-        <%= link_to "Login", new_user_session_path, class: "btn btn-outline-primary me-2" %>
-        <%= link_to "Signup", new_user_registration_path, class: "btn btn-outline-success" %>
+        <div class="d-flex">
+          <%= link_to new_user_session_path, class: "btn btn-outline-light me-2" do %>
+            <i class="fas fa-sign-in-alt me-1"></i> Login
+          <% end %>
+          <%= link_to new_user_registration_path, class: "btn btn-light" do %>
+            <i class="fas fa-user-plus me-1"></i> Sign up
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>

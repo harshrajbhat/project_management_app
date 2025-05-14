@@ -1,32 +1,34 @@
-<%= form_with(model: team) do |form| %>
+<%= form_with(model: team, local: true, class: "card p-4 shadow-sm bg-light") do |form| %>
   <% if team.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:</h2>
-
+    <div class="alert alert-danger">
+      <h4 class="alert-heading">
+        <%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:
+      </h4>
       <ul>
-        <% team.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% team.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="mb-3">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Enter team name" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :project_id, "Assign Project", class: "form-label" %>
+    <%= form.select :project_id, Project.all.map { |p| ["#{p.name} (##{p.id})", p.id] }, { prompt: "Select a project" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :user_ids, "Select Developers", class: "form-label" %>
+    <%= form.collection_select :user_ids, User.all, :id, :name, {}, { multiple: true, class: "form-select", size: 5 } %>
+    <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple users</div>
   </div>
 
   <div>
-    <%= form.label :project_id, style: "display: block" %>
-    <%= form.select :project_id, Project.all.map { |p| ["#{p.name} (##{p.id})", p.id] }, prompt: "Select project" %>
-  </div>
-
-  <div>
-    <%= form.label :user_id, "Team Member", style: "display: block" %>
-    <%= form.select :user_id, User.all.map { |u| ["#{u.name} (#{u.email})", u.id] }, prompt: "Select user" %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary" %>
   </div>
 <% end %>
