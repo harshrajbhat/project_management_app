@@ -6,7 +6,13 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    if current_user.manager?
+      @tasks = @project.tasks
+    else
+      @tasks = @project.tasks.where(user_id: current_user.id)
+    end
   end
+
 
   def new
     @project = Project.new
@@ -16,7 +22,7 @@ class ProjectsController < ApplicationController
   def edit
   end
 
- 
+
   def create
     @project = Project.new(project_params)
 
@@ -64,8 +70,3 @@ class ProjectsController < ApplicationController
       params.expect(project: [ :name, :description, :start_date, :end_date, :status, :user_id ])
     end
 end
-
-
-
-
-

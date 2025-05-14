@@ -1,41 +1,61 @@
+<% content_for :title, "Dashboard" %>
 
-<div class="container py-5">
-  <h1 class="text-center mb-5">Project Management Dashboard</h1>
+<div class="container mt-5">
+  <% if notice %>
+    <div class="alert alert-success">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <h1 class="text-primary text-center mb-5">Project Management Dashboard</h1>
 
   <!-- Projects Section -->
-  <h2 class="mb-4">Projects</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-secondary">Projects</h2>
+    <%= link_to new_project_path, class: "btn btn-success" do %>
+      <i class="fas fa-plus"></i> New Project
+    <% end %>
+  </div>
+
   <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <% @projects.each do |project| %>
       <div class="col">
-        <div class="card h-100 border-secondary bg-dark text-white">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title"><%= project.name %></h5>
             <p class="card-text"><%= truncate(project.description, length: 100) %></p>
-            <p class="card-text">
-              <span class="badge bg-info text-dark">Status: <%= project.status %></span>
-            </p>
-            <a href="<%= project_path(project) %>" class="btn btn-outline-light mt-2">Show</a>
+            <span class="badge bg-info text-dark mb-2">Status: <%= project.status.capitalize %></span><br>
+            <%= link_to project_path(project), class: "btn btn-sm btn-outline-primary", title: "Show" do %>
+              <i class="fas fa-eye"></i> Show
+            <% end %>
           </div>
         </div>
       </div>
     <% end %>
   </div>
-  
 
   <!-- Tasks Section -->
-  <h2 class="mb-4">Tasks</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-secondary">Tasks</h2>
+    <%= link_to new_task_path, class: "btn btn-success" do %>
+      <i class="fas fa-plus"></i> New Task
+    <% end %>
+  </div>
+
   <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <% @tasks.each do |task| %>
       <div class="col">
-        <div class="card h-100 border-secondary bg-dark text-white">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title"><%= task.title %></h5>
             <p class="card-text"><%= truncate(task.description, length: 100) %></p>
             <div class="mb-2">
-              <span class="badge bg-primary">Status: <%= task.status %></span>
-              <span class="badge bg-warning text-dark">Priority: <%= task.priority %></span>
+              <span class="badge bg-primary">Status: <%= task.status.capitalize %></span>
+              <span class="badge bg-warning text-dark">Priority: <%= task.priority.capitalize %></span>
             </div>
-            <a href="<%= task_path(task) %>" class="btn btn-outline-light">Show</a>
+            <%= link_to task_path(task), class: "btn btn-sm btn-outline-primary", title: "Show Task" do %>
+              <i class="fas fa-eye"></i> Show
+            <% end %>
           </div>
         </div>
       </div>
@@ -43,11 +63,17 @@
   </div>
 
   <!-- Milestones Section -->
-  <h2 class="mb-4">Milestones</h2>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-secondary">Milestones</h2>
+    <%= link_to new_milestone_path, class: "btn btn-success" do %>
+      <i class="fas fa-plus"></i> New Milestone
+    <% end %>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <% @milestones.each do |milestone| %>
       <div class="col">
-        <div class="card h-100 border-secondary bg-dark text-white">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title"><%= milestone.name %></h5>
             <p class="card-text"><%= truncate(milestone.description, length: 100) %></p>
@@ -56,7 +82,9 @@
                 Due: <%= milestone.due_date&.strftime("%b %d, %Y") %>
               </span>
             </p>
-            <a href="<%= milestone_path(milestone) %>" class="btn btn-outline-light mt-2">Show</a>
+            <%= link_to milestone_path(milestone), class: "btn btn-sm btn-outline-primary", title: "Show Milestone" do %>
+              <i class="fas fa-eye"></i> Show
+            <% end %>
           </div>
         </div>
       </div>

@@ -12,15 +12,14 @@
         <li class="nav-item"><%= link_to "Tasks", tasks_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Milestones", milestones_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to "Teams", teams_path, class: "nav-link" %></li>
-        <%# Comment this out if you don’t have users_path defined %>
-        <%# <li class="nav-item"><%= link_to "Users", users_path, class: "nav-link" %></li> 
       </ul>
 
       <% if user_signed_in? %>
         <span class="navbar-text me-3">
           Logged in as <%= current_user.email %>
         </span>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger" %>
+          <%= button_to 'Logout', destroy_user_session_path, method: :delete,class: "btn btn-outline-danger me-2" %>
+
       <% else %>
         <%= link_to "Login", new_user_session_path, class: "btn btn-outline-primary me-2" %>
         <%= link_to "Signup", new_user_registration_path, class: "btn btn-outline-success" %>

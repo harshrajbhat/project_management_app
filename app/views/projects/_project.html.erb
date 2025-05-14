@@ -26,9 +26,19 @@
         <strong>Created by User ID:</strong> <%= project.user_id %>
       </p>
     </div>
+
+    <div class="mt-4 d-flex gap-3">
+      <%= link_to edit_project_path(project), class: "btn btn-sm btn-warning", title: "Edit" do %>
+        <i class="fas fa-edit"></i> Edit
+      <% end %>
+
+      <%= link_to projects_path, class: "btn btn-sm btn-secondary", title: "Back" do %>
+        <i class="fas fa-arrow-left"></i> Back
+      <% end %>
+
+      <%= button_to project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger", title: "Delete" do %>
+        <i class="fas fa-trash-alt"></i> Delete
+      <% end %>
+    </div>
   </div>
-
-
-
-
-  
+</div>

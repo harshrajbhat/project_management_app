@@ -1,25 +1,21 @@
 class MilestonesController < ApplicationController
   before_action :set_milestone, only: %i[ show edit update destroy ]
 
-  # GET /milestones or /milestones.json
+  
   def index
     @milestones = Milestone.all
   end
 
-  # GET /milestones/1 or /milestones/1.json
   def show
   end
 
-  # GET /milestones/new
   def new
     @milestone = Milestone.new
   end
 
-  # GET /milestones/1/edit
   def edit
   end
 
-  # POST /milestones or /milestones.json
   def create
     @milestone = Milestone.new(milestone_params)
 
@@ -34,7 +30,6 @@ class MilestonesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /milestones/1 or /milestones/1.json
   def update
     respond_to do |format|
       if @milestone.update(milestone_params)
@@ -47,7 +42,6 @@ class MilestonesController < ApplicationController
     end
   end
 
-  # DELETE /milestones/1 or /milestones/1.json
   def destroy
     @milestone.destroy!
 
@@ -58,12 +52,10 @@ class MilestonesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_milestone
       @milestone = Milestone.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def milestone_params
       params.expect(milestone: [ :name, :description, :due_date, :project_id ])
     end
