@@ -1,12 +1,21 @@
-<% content_for :title, "Editing team" %>
+<% content_for :title, "Editing Team" %>
 
-<h1>Editing team</h1>
+<div class="container mt-3 mb-3 w-100" style="max-width: 800px;">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">Edit Team</h1>
+    <div>
+      <%= link_to @team, class: "btn btn-outline-primary me-2" do %>
+        <i class="bi bi-eye"></i> Show Team
+      <% end %>
+      <%= link_to teams_path, class: "btn btn-secondary" do %>
+        <i class="bi bi-arrow-left"></i> Back to Teams
+      <% end %>
+    </div>
+  </div>
 
-<%= render "form", team: @team %>
-
-<br>
-
-<div>
-  <%= link_to "Show this team", @team %> |
-  <%= link_to "Back to teams", teams_path %>
+  <div class="card shadow rounded">
+    <div class="card-body">
+      <%= render "form", team: @team %>
+    </div>
+  </div>
 </div>

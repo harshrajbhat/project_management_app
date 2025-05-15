@@ -14,27 +14,29 @@
         <%= @task.status %>
       </span>
     </div>
-    
+
     <div class="card-body">
       <%= render @task %>
     </div>
-    
+
     <div class="card-footer bg-white d-flex justify-content-between">
       <div>
         <%= link_to tasks_path, class: "btn btn-outline-secondary" do %>
-          <i class="bi bi-arrow-left"></i> Back to tasks
+          <i class="fas fa-arrow-left"></i> Back to tasks
         <% end %>
       </div>
-      
-      <div>
-        <%= link_to edit_task_path(@task), class: "btn btn-outline-primary me-2" do %>
-          <i class="bi bi-pencil"></i> Edit
-        <% end %>
-        
-        <%= button_to @task, method: :delete, class: "btn btn-outline-danger", form: { data: { turbo_confirm: "Are you sure?" } }, style: "display: inline-block;" do %>
-          <i class="bi bi-trash"></i> Delete
-        <% end %>
-      </div>
+
+      <% if current_user.role == 'manager' %>
+        <div class="d-flex gap-2">
+          <%= link_to edit_task_path(@task), class: "btn btn-outline-primary ", title: "Edit" do %>
+            <i class="fas fa-pencil"></i>
+          <% end %>
+
+          <%= button_to @task, method: :delete, class: "btn btn-outline-danger ", form: { data: { turbo_confirm: "Are you sure?" } }, title: "Delete" do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

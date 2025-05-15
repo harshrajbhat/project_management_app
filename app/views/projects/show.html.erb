@@ -1,5 +1,4 @@
-<!-- show.html.erb (Project Show Page) -->
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 px-3 min-vh-100">
   <% if notice %>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <%= notice %>
@@ -7,293 +6,102 @@
     </div>
   <% end %>
 
-  <div class="row g-4">
-    <!-- Left column: Project details -->
-    <div class="col-lg-4">
-      <!-- Project Details Section -->
-      <div class="mb-4">
+  <div class="row g-4 h-100">
+    <!-- Left Column: Project Details -->
+    <div class="col-lg-4 d-flex flex-column h-100">
+      <div class="flex-grow-1 d-flex flex-column">
         <%= render @project %>
       </div>
-      
-      <!-- Project Stats Card -->
-      <div class="card shadow-sm border-0 rounded mb-4">
-        <div class="card-header bg-white border-bottom py-3">
-          <h5 class="mb-0">
-            <i class="fas fa-chart-pie text-primary me-2"></i>Project Stats
-          </h5>
-        </div>
-        <div class="card-body p-0">
-          <div class="list-group list-group-flush">
-            <div class="list-group-item px-3 py-3 d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
-                  <i class="fas fa-tasks text-primary"></i>
-                </div>
-                <div>Total Tasks</div>
-              </div>
-              <span class="badge bg-primary rounded-pill"><%= @tasks.count %></span>
-            </div>
-            <div class="list-group-item px-3 py-3 d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div class="bg-success bg-opacity-10 p-2 rounded me-3">
-                  <i class="fas fa-check-circle text-success"></i>
-                </div>
-                <div>Completed</div>
-              </div>
-              <span class="badge bg-success rounded-pill"><%= @tasks.select { |t| t.status&.downcase == "completed" }.count %></span>
-            </div>
-            <div class="list-group-item px-3 py-3 d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div class="bg-info bg-opacity-10 p-2 rounded me-3">
-                  <i class="fas fa-spinner text-info"></i>
-                </div>
-                <div>In Progress</div>
-              </div>
-              <span class="badge bg-info rounded-pill"><%= @tasks.select { |t| t.status&.downcase == "in_progress" }.count %></span>
-            </div>
-            <div class="list-group-item px-3 py-3 d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div class="bg-danger bg-opacity-10 p-2 rounded me-3">
-                  <i class="fas fa-exclamation-circle text-danger"></i>
-                </div>
-                <div>Blocked/Issues</div>
-              </div>
-              <span class="badge bg-danger rounded-pill"><%= @tasks.select { |t| t.status&.downcase == "blocked" }.count %></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Team Members Card (placeholder) -->
-      <div class="card shadow-sm border-0 rounded mb-4">
-        <div class="card-header bg-white border-bottom py-3">
-          <h5 class="mb-0">
-            <i class="fas fa-users text-primary me-2"></i>Team
-          </h5>
-        </div>
-        <div class="card-body">
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-              <span class="text-white fw-bold">U<%= @project.user_id %></span>
-            </div>
-            <div class="bg-info rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-              <span class="text-white fw-bold">JS</span>
-            </div>
-            <div class="bg-success rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-              <span class="text-white fw-bold">AK</span>
-            </div>
-            <div class="bg-warning rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-              <span class="text-white fw-bold">MR</span>
-            </div>
-            <div class="bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-              <i class="fas fa-plus text-white"></i>
-            </div>
-          </div>
-          <button class="btn btn-sm btn-outline-primary w-100">
-            <i class="fas fa-user-plus me-1"></i> Invite Team Member
-          </button>
-        </div>
-      </div>
     </div>
-    
-    <!-- Right column: Tasks and activity -->
-    <div class="col-lg-8">
+
+    <!-- Right Column: Task Section -->
+    <div class="col-lg-8 d-flex flex-column h-100">
       <!-- Quick Filters -->
-      <div class="card shadow-sm border-0 rounded mb-4">
-        <div class="card-body p-3">
+      <div class="card shadow-sm border rounded-3 mb-4">
+        <div class="card-body py-3 px-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">
+            <h5 class="mb-0 text-dark">
               <i class="fas fa-tasks text-primary me-2"></i>Tasks
             </h5>
-            <div>
-              <%= link_to new_task_path(project_id: @project.id), class: "btn btn-sm btn-success" do %>
+            <% if current_user.role == 'manager' %>
+              <%= link_to new_task_path(project_id: @project.id), class: "btn btn-success btn-sm" do %>
                 <i class="fas fa-plus me-1"></i> New Task
               <% end %>
-            </div>
+            <% end %>
           </div>
-          
+
           <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-sm btn-outline-primary">
+            <button class="btn btn-outline-primary btn-sm">
               <i class="fas fa-list me-1"></i> All Tasks
             </button>
-            <button class="btn btn-sm btn-outline-success">
-              <i class="fas fa-check-circle me-1"></i> Completed
-            </button>
-            <button class="btn btn-sm btn-outline-info">
-              <i class="fas fa-spinner me-1"></i> In Progress
-            </button>
-            <button class="btn btn-sm btn-outline-danger">
-              <i class="fas fa-exclamation-circle me-1"></i> Blocked
-            </button>
-            <button class="btn btn-sm btn-outline-warning">
-              <i class="fas fa-clock me-1"></i> Upcoming
-            </button>
-            <div class="ms-auto d-flex align-items-center">
-              <div class="input-group input-group-sm">
-                <span class="input-group-text bg-white border-end-0">
-                  <i class="fas fa-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control border-start-0 ps-0" placeholder="Search tasks">
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      
-      <!-- Tasks Board -->
-      <div class="row g-4">
-        <!-- To Do Column -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0 rounded h-100">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-              <h6 class="mb-0 text-secondary">
-                <i class="fas fa-clipboard-list me-2"></i>To Do
-              </h6>
-              <span class="badge bg-secondary rounded-pill">
-                <%= @tasks.select { |t| !t.status || t.status.downcase == "to_do" }.count %>
-              </span>
-            </div>
-            <div class="card-body p-0">
-              <div class="list-group list-group-flush">
-                <% @tasks.select { |t| !t.status || t.status.downcase == "to_do" }.each do |task| %>
-                  <%= link_to task, class: "list-group-item list-group-item-action p-3 border-start-0 border-end-0" do %>
-                    <% priority_class = case task.priority&.downcase
-                      when "high" then "bg-danger"
-                      when "medium" then "bg-warning text-dark"
-                      when "low" then "bg-info text-dark"
-                      else "bg-secondary"
-                    end %>
-                    <span class="badge <%= priority_class %> mb-2"><%= task.priority&.capitalize || "None" %></span>
-                    <h6 class="mb-1"><%= task.title %></h6>
-                    <p class="mb-2 small text-muted text-truncate"><%= task.description %></p>
-                    <% if task.due_date %>
-                      <small class="text-muted">
-                        <i class="far fa-calendar me-1"></i>
-                        <%= task.due_date.strftime("%b %d") %>
-                      </small>
+
+      <!-- Task Columns -->
+      <div class="row g-4 flex-grow-1">
+        <% ["to_do", "in_progress", "completed"].each do |status| %>
+          <% column_title, icon_class, color_class = {
+              "to_do" => ["To Do", "clipboard-list", "secondary"],
+              "in_progress" => ["In Progress", "spinner", "primary"],
+              "completed" => ["Completed", "check-circle", "success"]
+            }[status] %>
+
+          <div class="col-md-4 d-flex flex-column">
+            <div class="card shadow-sm border rounded-3 h-100 d-flex flex-column">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0 text-<%= color_class %>">
+                  <i class="fas fa-<%= icon_class %> me-2"></i><%= column_title %>
+                </h6>
+                <span class="badge bg-<%= color_class %> rounded-pill">
+                  <%= @tasks.select { |t| (t.status || "to_do").downcase == status }.count %>
+                </span>
+              </div>
+
+              <div class="card-body p-0 flex-grow-1">
+                <div class="list-group list-group-flush h-100">
+                  <% filtered_tasks = @tasks.select { |t| (t.status || "to_do").downcase == status } %>
+                  <% if filtered_tasks.any? %>
+                    <% filtered_tasks.each do |task| %>
+                      <%= link_to task, class: "list-group-item list-group-item-action px-3 py-3 border-0 border-bottom" do %>
+                        <% priority_class = case task.priority&.downcase
+                          when "high" then "bg-danger"
+                          when "medium" then "bg-warning text-dark"
+                          when "low" then "bg-info text-dark"
+                          else "bg-secondary"
+                        end %>
+                        <span class="badge <%= priority_class %> mb-2"><%= task.priority&.capitalize || "None" %></span>
+                        <h6 class="mb-1 fw-semibold"><%= task.title %></h6>
+                        <p class="mb-2 small text-muted text-truncate"><%= task.description %></p>
+                        <% if task.due_date %>
+                          <small class="text-muted">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <%= task.due_date.strftime("%b %d") %>
+                          </small>
+                        <% end %>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                <% end %>
-                
-                <% if @tasks.select { |t| !t.status || t.status.downcase == "to_do" }.empty? %>
-                  <div class="text-center p-4">
-                    <div class="mb-2">
-                      <i class="fas fa-clipboard-list text-muted fa-2x"></i>
+                  <% else %>
+                    <div class="text-center p-4">
+                      <div class="mb-2">
+                        <i class="fas fa-<%= icon_class %> text-muted fa-2x"></i>
+                      </div>
+                      <p class="text-muted mb-0">No <%= column_title.downcase %> tasks</p>
                     </div>
-                    <p class="text-muted mb-0">No tasks to show</p>
-                  </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="card-footer bg-white border-top p-2">
+                <% if current_user.role == 'manager' %>
+                  <%= link_to new_task_path(project_id: @project.id, status: column_title), class: "btn btn-sm btn-light w-100" do %>
+                    <i class="fas fa-plus me-1"></i> Add Task
+                  <% end %>
                 <% end %>
               </div>
             </div>
-            <div class="card-footer bg-white border-top p-2">
-              <%= link_to new_task_path(project_id: @project.id, status: "To Do"), class: "btn btn-sm btn-light w-100" do %>
-                <i class="fas fa-plus me-1"></i> Add Task
-              <% end %>
-            </div>
           </div>
-        </div>
-        
-        <!-- In Progress Column -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0 rounded h-100">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-              <h6 class="mb-0 text-primary">
-                <i class="fas fa-spinner me-2"></i>In Progress
-              </h6>
-              <span class="badge bg-primary rounded-pill">
-                <%= @tasks.select { |t| t.status&.downcase == "in_progress" }.count %>
-              </span>
-            </div>
-            <div class="card-body p-0">
-              <div class="list-group list-group-flush">
-                <% @tasks.select { |t| t.status&.downcase == "in_progress" }.each do |task| %>
-                  <%= link_to task, class: "list-group-item list-group-item-action p-3 border-start-0 border-end-0" do %>
-                    <% priority_class = case task.priority&.downcase
-                      when "high" then "bg-danger"
-                      when "medium" then "bg-warning text-dark"
-                      when "low" then "bg-info text-dark"
-                      else "bg-secondary"
-                    end %>
-                    <span class="badge <%= priority_class %> mb-2"><%= task.priority&.capitalize || "None" %></span>
-                    <h6 class="mb-1"><%= task.title %></h6>
-                    <p class="mb-2 small text-muted text-truncate"><%= task.description %></p>
-                    <% if task.due_date %>
-                      <small class="text-muted">
-                        <i class="far fa-calendar me-1"></i>
-                        <%= task.due_date.strftime("%b %d") %>
-                      </small>
-                    <% end %>
-                  <% end %>
-                <% end %>
-                
-                <% if @tasks.select { |t| t.status&.downcase == "in_progress" }.empty? %>
-                  <div class="text-center p-4">
-                    <div class="mb-2">
-                      <i class="fas fa-spinner text-muted fa-2x"></i>
-                    </div>
-                    <p class="text-muted mb-0">No tasks in progress</p>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="card-footer bg-white border-top p-2">
-              <%= link_to new_task_path(project_id: @project.id, status: "In Progress"), class: "btn btn-sm btn-light w-100" do %>
-                <i class="fas fa-plus me-1"></i> Add Task
-              <% end %>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Completed Column -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0 rounded h-100">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-              <h6 class="mb-0 text-success">
-                <i class="fas fa-check-circle me-2"></i>Completed
-              </h6>
-              <span class="badge bg-success rounded-pill">
-                <%= @tasks.select { |t| t.status&.downcase == "completed" }.count %>
-              </span>
-            </div>
-            <div class="card-body p-0">
-              <div class="list-group list-group-flush">
-                <% @tasks.select { |t| t.status&.downcase == "completed" }.each do |task| %>
-                  <%= link_to task, class: "list-group-item list-group-item-action p-3 border-start-0 border-end-0" do %>
-                    <% priority_class = case task.priority&.downcase
-                      when "high" then "bg-danger"
-                      when "medium" then "bg-warning text-dark"
-                      when "low" then "bg-info text-dark"
-                      else "bg-secondary"
-                    end %>
-                    <span class="badge <%= priority_class %> mb-2"><%= task.priority&.capitalize || "None" %></span>
-                    <h6 class="mb-1 text-decoration-line-through"><%= task.title %></h6>
-                    <p class="mb-2 small text-muted text-truncate"><%= task.description %></p>
-                    <% if task.due_date %>
-                      <small class="text-muted">
-                        <i class="far fa-calendar-check me-1"></i>
-                        <%= task.due_date.strftime("%b %d") %>
-                      </small>
-                    <% end %>
-                  <% end %>
-                <% end %>
-                
-                <% if @tasks.select { |t| t.status&.downcase == "completed" }.empty? %>
-                  <div class="text-center p-4">
-                    <div class="mb-2">
-                      <i class="fas fa-check-circle text-muted fa-2x"></i>
-                    </div>
-                    <p class="text-muted mb-0">No completed tasks</p>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="card-footer bg-white border-top p-2">
-              <%= link_to new_task_path(project_id: @project.id, status: "Completed"), class: "btn btn-sm btn-light w-100" do %>
-                <i class="fas fa-plus me-1"></i> Add Task
-              <% end %>
-            </div>
-          </div>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

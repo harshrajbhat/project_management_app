@@ -1,22 +1,25 @@
-<div id="<%= dom_id milestone %>">
-  <p>
-    <strong>Name:</strong>
-    <%= milestone.name %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= milestone.description %>
-  </p>
-
-  <p>
-    <strong>Due date:</strong>
-    <%= milestone.due_date %>
-  </p>
-
-  <p>
-    <strong>Project:</strong>
-    <%= milestone.project_id %>
-  </p>
-
+<div id="<%= dom_id milestone %>" class="milestone-details">
+  <div class="row">
+    <div class="col-md-6 mb-2">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-bookmark text-primary me-2"></i>
+        <h5 class="mb-0"><%= milestone.name %></h5>
+      </div>
+    </div>
+    <div class="col-md-6 mb-2 text-md-end">
+      <span class="badge bg-<%= Date.today > milestone.due_date ? 'danger' : (Date.today == milestone.due_date ? 'warning' : 'info') %>">
+        <i class="fas fa-calendar-alt me-1"></i> <%= milestone.due_date.strftime("%b %d, %Y") %>
+      </span>
+    </div>
+  </div>
+  
+  <div class="mt-2">
+    <p class="text-muted">
+      <i class="fas fa-align-left me-1"></i> <%= milestone.description %>
+    </p>
+  </div>
+  
+  <div class="mt-1 small text-muted">
+    <i class="fas fa-project-diagram me-1"></i> Project ID: <%= milestone.project_id %>
+  </div>
 </div>

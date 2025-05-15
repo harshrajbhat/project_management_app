@@ -1,16 +1,36 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Teams" %>
 
-<h1>Teams</h1>
-
-<div id="teams">
-  <% @teams.each do |team| %>
-  <%= render partial: "team", locals: { team: team } %>
-    <p>
-      <%= link_to "Show this team", team %>
-    </p>
+<div class="container mt-4">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
-</div>
 
-<%= link_to "New team", new_team_path %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-users me-2"></i> Teams</h1>
+    <% if current_user.role == 'manager' %>
+      <%= link_to new_team_path, class: "btn btn-primary" do %>
+        <i class="fas fa-plus me-1"></i> New Team
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="row" id="teams">
+    <% @teams.each do |team| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <%= render partial: "team", locals: { team: team } %>
+          </div>
+          <div class="card-footer bg-transparent border-top-0 text-end">
+            <%= link_to team, class: "btn btn-outline-primary btn-sm" do %>
+              <i class="fas fa-eye me-1"></i> Show Details
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

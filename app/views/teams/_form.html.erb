@@ -1,10 +1,10 @@
-<%= form_with(model: team, local: true, class: "card p-4 shadow-sm bg-light") do |form| %>
+<%= form_with(model: team, local: true, class: "needs-validation") do |form| %>
   <% if team.errors.any? %>
     <div class="alert alert-danger">
-      <h4 class="alert-heading">
+      <h5 class="alert-heading">
         <%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:
-      </h4>
-      <ul>
+      </h5>
+      <ul class="mb-0">
         <% team.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -14,21 +14,25 @@
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
-    <%= form.text_field :name, class: "form-control", placeholder: "Enter team name" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Enter team name", required: true %>
   </div>
 
   <div class="mb-3">
     <%= form.label :project_id, "Assign Project", class: "form-label" %>
-    <%= form.select :project_id, Project.all.map { |p| ["#{p.name} (##{p.id})", p.id] }, { prompt: "Select a project" }, class: "form-select" %>
+    <%= form.select :project_id, Project.all.map { |p| ["#{p.name} (##{p.id})", p.id] }, 
+                    { prompt: "Select a project" }, 
+                    class: "form-select", required: true %>
   </div>
 
   <div class="mb-3">
     <%= form.label :user_ids, "Select Developers", class: "form-label" %>
-    <%= form.collection_select :user_ids, User.all, :id, :name, {}, { multiple: true, class: "form-select", size: 5 } %>
+    <%= form.collection_select :user_ids, User.all, :id, :name, 
+                               {}, 
+                               { multiple: true, class: "form-select", size: 5 } %>
     <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple users</div>
   </div>
 
-  <div>
-    <%= form.submit class: "btn btn-primary" %>
+  <div class="text-end">
+    <%= form.submit class: "btn btn-success" %>
   </div>
 <% end %>

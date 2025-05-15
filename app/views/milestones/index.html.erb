@@ -1,16 +1,42 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Milestones" %>
 
-<h1>Milestones</h1>
-
-<div id="milestones">
-  <% @milestones.each do |milestone| %>
-    <%= render milestone %>
-    <p>
-      <%= link_to "Show this milestone", milestone %>
-    </p>
+<div class="container-fluid py-3">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
-</div>
 
-<%= link_to "New milestone", new_milestone_path %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-flag-checkered me-2"></i>Milestones</h1>
+    <% if current_user.role == 'manager' %>
+      <%= link_to new_milestone_path, class: "btn btn-primary" do %>
+        <i class="fas fa-plus me-1"></i> New milestone
+      <% end %>
+    <% end %>
+  </div>
+
+  <div id="milestones" class="row">
+    <% if @milestones.any? %>
+      <% @milestones.each do |milestone| %>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <%= render milestone %>
+            </div>
+            <div class="card-footer bg-white text-end">
+              <%= link_to milestone, class: "btn btn-sm btn-outline-primary" do %>
+                <i class="fas fa-eye me-1"></i> Show details
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12">
+        <p class="text-muted text-center my-3">No milestones found.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
