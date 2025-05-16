@@ -20,4 +20,12 @@
       </div>
     <% end %>
   </div>
+
+  <!-- Pagination -->
+  <% if @tasks.any? %>
+    <div class="d-flex justify-content-center mt-4">
+      <%= paginate @tasks %>
+    </div>
+  <% end %>
+
 </div>

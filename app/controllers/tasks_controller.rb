@@ -3,11 +3,14 @@ class TasksController < ApplicationController
 
   def index
     if current_user.role == "manager"
-      @tasks = Task.includes(:project, :user)
+      @q = Task.ransack(params[:q])
+      @tasks = @q.result.includes(:project, :user).page(params[:page]).per(6)
     else
-      @tasks = current_user.tasks.includes(:project)
+      @q = current_user.tasks.ransack(params[:q])
+      @tasks = @q.result.includes(:project).page(params[:page]).per(6)
     end
   end
+  
 
   
   def show

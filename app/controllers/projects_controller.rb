@@ -1,12 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ]
-
+  
   def index
-      @projects = Project.all
-
-      @q = Project.ransack(params[:q])
-      @projects = @q.result(distinct: true)
+    @q = Project.ransack(params[:q])
+    @projects = @q.result(distinct: true).page(params[:page]).per(6)
   end
+  
 
   def show
     if current_user.manager?
